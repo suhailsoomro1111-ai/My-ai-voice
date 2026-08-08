@@ -1,0 +1,14 @@
+function speak() {
+    const text = document.getElementById("text").value;
+
+    if (!text.trim()) {
+        alert("براہِ کرم پہلے اردو متن لکھیں");
+        return;
+    }
+
+    const voice = new SpeechSynthesisUtterance(text);
+    voice.lang = "ur-PK";
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(voice);
+}
