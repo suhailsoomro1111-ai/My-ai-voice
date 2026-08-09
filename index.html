@@ -1,139 +1,22 @@
 <!DOCTYPE html>
-<html lang="ur" dir="rtl">
+<html lang="ur">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Urdu AI Voice</title>
-
-<style>
-body{
-    font-family:Arial,sans-serif;
-    background:#f2f7ff;
-    margin:0;
-    padding:20px;
-}
-.box{
-    max-width:600px;
-    margin:30px auto;
-    background:white;
-    padding:25px;
-    border-radius:20px;
-    box-shadow:0 4px 15px #ccc;
-}
-h1{
-    text-align:center;
-    color:#2457a6;
-}
-textarea{
-    width:100%;
-    height:180px;
-    font-size:18px;
-    padding:12px;
-    box-sizing:border-box;
-    border-radius:12px;
-    border:1px solid #aaa;
-}
-button{
-    width:100%;
-    padding:14px;
-    margin-top:15px;
-    border:0;
-    border-radius:12px;
-    background:#2457a6;
-    color:white;
-    font-size:18px;
-}
-select{
-    width:100%;
-    padding:12px;
-    margin-top:15px;
-    font-size:16px;
-    border-radius:10px;
-}
-p{
-    text-align:center;
-    color:#666;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Urdu AI Voice</title>
 </head>
-
 <body>
 
-<div class="box">
-<h1>🎙️ My Urdu AI Voice</h1>
+  <h2>🎙️ My Urdu AI Voice</h2>
 
-<p>اپنا اردو متن یہاں لکھیں</p>
+  <textarea id="text" rows="8" cols="35"
+    placeholder="Yahan Urdu text likhein..."></textarea>
 
-<textarea id="text" placeholder="یہاں اردو لکھیں..."></textarea>
+  <br><br>
 
-<select id="voiceSelect">
-<option value="">آواز منتخب کریں</option>
-</select>
+  <button onclick="speak()">🔊 Voice Banayein</button>
 
-<button onclick="speak()">🔊 میری آواز سنیں</button>
-
-</div>
-
-<script>
-
-let voices = [];
-
-function loadVoices(){
-
-    voices = speechSynthesis.getVoices();
-
-    const select = document.getElementById("voiceSelect");
-
-    select.innerHTML = '<option value="">آواز منتخب کریں</option>';
-
-    voices.forEach((voice,index)=>{
-
-        if(voice.lang.toLowerCase().startsWith("ur") ||
-           voice.lang.toLowerCase().startsWith("hi") ||
-           voice.lang.toLowerCase().startsWith("en")){
-
-            let option = document.createElement("option");
-
-            option.value = index;
-            option.textContent = voice.name + " (" + voice.lang + ")";
-
-            select.appendChild(option);
-        }
-
-    });
-}
-
-speechSynthesis.onvoiceschanged = loadVoices;
-
-loadVoices();
-
-function speak(){
-
-    const text = document.getElementById("text").value;
-
-    if(!text.trim()){
-        alert("براہِ کرم پہلے اردو متن لکھیں");
-        return;
-    }
-
-    const select = document.getElementById("voiceSelect");
-
-    const utterance = new SpeechSynthesisUtterance(text);
-
-    utterance.lang = "ur-PK";
-
-    if(select.value !== ""){
-        utterance.voice = voices[select.value];
-    }
-
-    utterance.rate = 0.9;
-    utterance.pitch = 0.8;
-
-    speechSynthesis.cancel();
-    speechSynthesis.speak(utterance);
-}
-
-</script>
+  <script src="script.js"></script>
 
 </body>
 </html>
