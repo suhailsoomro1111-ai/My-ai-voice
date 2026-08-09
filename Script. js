@@ -1,14 +1,36 @@
 function speak() {
-    const text = document.getElementById("text").value;
+    const text = document.getElementById("text").value.trim();
 
-    if (!text.trim()) {
-        alert("براہِ کرم پہلے اردو متن لکھیں");
+    if (!text) {
+        alert("Pehle text likhein");
         return;
     }
 
-    const voice = new SpeechSynthesisUtterance(text);
-    voice.lang = "ur-PK";
+    if (!("speechSynthesis" in window)) {
+        alert("Aapka browser voice support nahi karta");
+        return;
+    }
 
-    speechSynthesis.cancel();
-    speechSynthesis.speak(voice);
+    window.speechSynthesis.cancel();
+
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.rate = 0.9;
+    speech.pitch = 1;
+    speech.volume = 1;
+
+    const voices = window.speechSynthesis.getVoices();
+
+    const urduVoice =
+        voices.find(v => v.lang.toLowerCase().startsWith("ur")) ||
+        voices.find(v => v.lang.toLowerCase().startsWith("hi"));
+
+    if (urduVoice) {
+        speech.voice = urduVoice;
+    }
+
+    window.speechSynthesis.speak(speech);
 }
+
+window.speechSynthesis.onvoiceschanged = function () {
+    window.speechSynthesis.getVoices();
+};
