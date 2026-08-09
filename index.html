@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Urdu AI Voice</title>
 </head>
-<body>
 
+<body>
   <h2>🎙️ My Urdu AI Voice</h2>
 
   <textarea id="text" rows="8" cols="35"
@@ -14,9 +14,27 @@
 
   <br><br>
 
-  <button onclick="speak()">🔊 Voice Banayein</button>
+  <button id="speakBtn">🔊 Voice Banayein</button>
 
-  <Script src="script.js"></script>
+  <script>
+    document.getElementById("speakBtn").addEventListener("click", function () {
+      const text = document.getElementById("text").value.trim();
 
+      if (!text) {
+        alert("Pehle text likhein");
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+
+      const voice = new SpeechSynthesisUtterance(text);
+      voice.lang = "ur-PK";
+      voice.rate = 0.9;
+      voice.pitch = 1;
+      voice.volume = 1;
+
+      window.speechSynthesis.speak(voice);
+    });
+  </script>
 </body>
 </html>
